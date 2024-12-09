@@ -22,10 +22,6 @@ class Planet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(120), nullable=True)
-    
-
-    def __repr__(self):
-        return '<Planet %r>' % self.username
 
     def serialize(self):
         return {
@@ -35,4 +31,30 @@ class Planet(db.Model):
             # do not serialize the password, its a security breach
         }
 
-     
+class People(db.Model): 
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    birth_year = db.Column(db.String(20), nullable=True)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "birth_year": self.birth_year,
+            # do not serialize the password, its a security breach
+        }
+    
+class Favorite(db.Model): 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    planet_id = db.Column(db.Integer, db.ForeignKey("planet.id"), nullable=False)
+    people_id = db.Column(db.Integer, db.ForeignKey("people.id"), nullable=False)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "planet_id": self.planet_id,
+            "people_id": self.people_id,
+            # do not serialize the password, its a security breach
+        }
